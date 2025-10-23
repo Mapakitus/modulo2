@@ -11,3 +11,12 @@
 5. Seleccionar el intérprete de Python, la versión, he elegido la última que tengo. 3.14
 
 6. Se va creando y finalmente lo comprobamos en el arbol de directorios, que está .venv
+
+## Si aparece un error de windows en la consola.
+
+1. En la barra de windows, buscar powershell y ejecutar el siguiente comando: "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser"
+
+Así reinicias VSCode y ya no da error.
+
+## Para instalarlo, en la terminal ejecutamos:
+ pip install -r requirements.txt
