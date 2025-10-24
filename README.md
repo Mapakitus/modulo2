@@ -20,3 +20,9 @@ Así reinicias VSCode y ya no da error.
 
 ## Para instalarlo, en la terminal ejecutamos:
  pip install -r requirements.txt
+
+ ## Para ejecutar el main.py por ejemplo haríamos lo siguiente:
+
+ **python main.py**
+
+ * Ejecutar en la terminal -> uvicorn main:app --reload
