@@ -26,3 +26,11 @@ Así reinicias VSCode y ya no da error.
  **python main.py**
 
  * Ejecutar en la terminal -> uvicorn main:app --reload
+
+ ## Si se trata del fichero prueba.py dentro de la carpeta metodos_GET
+
+ * uvicorn metodos_GET.prueba:app --reload
+
+ * Se pone uvicorn nombre_Carpeta.nombre_fichero:app --reload
+
+ ##
