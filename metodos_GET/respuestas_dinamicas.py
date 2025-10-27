@@ -10,5 +10,9 @@ def obtener_hora():
     ahora = datetime.now()
     return {
         "fecha": ahora.strftime("%Y-%m-%d"),
-        "hora": ahora.strftime("%H:%M:%S")
+        "hora": ahora.strftime("%H:%M:%S"),
+        "dia_semana": ahora.strftime("%A"),
+        "mes": ahora.strftime("%B"),
+        "anyo": ahora.year
+    
     }
