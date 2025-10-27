@@ -20,3 +20,17 @@ def leer_raiz():
 def obtener_productos():
 # devolvemos una lista de productos
     return {"productos": ["Leche", "Queso", "Manzana", "Limpiacristales"]}
+
+#ruta de usuarios
+@app.get("/usuarios")
+def obtener_usuarios():
+# devolvemos una lista de usuarios
+    return {"productos": ["La Grajilla", "Paco", "Reyes", "Javi"]}
+
+#ruta de configuración
+@app.get("/configuracion")
+def leer_configuracion():
+# devolvemos una lista de usuarios
+    return {"tema": "oscuro", "idioma": "español", "notificaciones": True, "valor_oro": 127.56}
+
+
