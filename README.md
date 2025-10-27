@@ -14,23 +14,27 @@
 
 ## Si aparece un error de windows en la consola.
 
-1. En la barra de windows, buscar powershell y ejecutar el siguiente comando: "Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser"
+1. En la barra de windows, buscar powershell y ejecutar el siguiente comando: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
 
 Así reinicias VSCode y ya no da error.
 
 ## Para instalarlo, en la terminal ejecutamos:
- pip install -r requirements.txt
+ `pip install -r requirements.txt`
 
  ## Para ejecutar el main.py por ejemplo haríamos lo siguiente:
 
  **python main.py**
 
- * Ejecutar en la terminal -> uvicorn main:app --reload
+ * Ejecutar en la terminal -> `uvicorn main:app --reload`
 
  ## Si se trata del fichero prueba.py dentro de la carpeta metodos_GET
 
- * uvicorn metodos_GET.prueba:app --reload
+ * `uvicorn metodos_GET.prueba:app --reload`
 
- * Se pone uvicorn nombre_Carpeta.nombre_fichero:app --reload
+ * Se pone `uvicorn nombre_Carpeta.nombre_fichero:app --reload`
 
- ##
+ ## ERRORES COMUNES
+
+ * Si no está activo el entorno virtual.
+
+ 1. Abrir la terminal y ejecutar el comando: `.\.venv\Scripts\Activate.ps1`
