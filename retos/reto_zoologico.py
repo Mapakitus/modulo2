@@ -30,7 +30,7 @@ app = FastAPI()
 def obtener_animales():
 # devolvemos una lista de animales
     return {
-        "Animales": ["Tigre", 
+        "animales": ["Tigre", 
                      "León", 
                      "Mapache", 
                      "Elefante"]
@@ -40,27 +40,27 @@ def obtener_animales():
 def leer_zoologico():
 # devolvemos información del zoologico
     return {
-        "Nombre": "ZOO de Paco",
-        "Cantidad_animales": 4,
-        "Abierto": True,
-        "Horario": "L-D 9:00-18:00"   
+        "nombre": "Zoo de Paco",
+        "cantidad_animales": 4,
+        "abierto": True,
+        "horario": "L-D 9:00-18:00"   
     }
     
 @app.get("/estadisticas")
 def leer_estadisticas():
 # devolvemos información de las estadisticas
     return {
-        "Informacion_general": {
-            "Nombre": "Zoo de Paco",
-            "Ubicación": "Brazatortas"
+        "informacion_general": {
+            "nombre": "Zoo de Paco",
+            "ubicación": "Brazatortas"
         },
-        "Datos_animales": {
-            "Total_especies": 4,
-            "Animales_populares": ["Mapache", "Elefante"]
+        "datos_animales": {
+            "total_especies": 4,
+            "animales_populares": ["Mapache", "Elefante"]
         },
-        "Estado_operacional": {
-            "Abierto": True,
-            "Empleados_presentes": 3
+        "estado_operacional": {
+            "abierto": True,
+            "empleados_presentes": 3
         }
     }
     
