@@ -37,7 +37,7 @@ def get_user(user_id: int, include_email: bool = False, format: str = "basic"):
 
 
 """
-#Usando comprensión de diccionario con el operdador de desempaquetado **
+#Usando comprensión de diccionario con el operador de desempaquetado **
 @app.get("/users/{user_id}")
 def get_user(user_id: int, include_email: bool = False, format: str = "basic"):
     return {
