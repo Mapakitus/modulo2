@@ -113,3 +113,9 @@ Comando para ejecutar en modo producción:
 ```shell
 fastapi run main.py
 ```
+
+#Para probar métodos POST
+
+http://localhost:8000/docs
+
+Se nos abre el swagger y podemos probar los métodos.
