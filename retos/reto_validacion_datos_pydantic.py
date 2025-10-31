@@ -47,7 +47,7 @@ class Producto(BaseModel):
     nombre: str
     precio: float
     categoria: str
-    disponible: Optional[bool] = True
+    disponible: bool = True
     descripcion: Optional[str] = None
     
 @app.post("/productos")
