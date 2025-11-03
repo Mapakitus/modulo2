@@ -31,8 +31,10 @@ def registrar_paciente(paciente: Paciente):
     #asignar id al paciente
     paciente_data["id"] = contador_id
     
+    #añadir paciente a la "base de datos"
     pacientes_db.append(paciente_data)
     
+    #verificar si el paciente tiene alergias
     tiene_alergias = len(paciente.alergias) > 0
     
     response = {
