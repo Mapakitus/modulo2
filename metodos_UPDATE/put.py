@@ -5,8 +5,8 @@ from typing import Optional
 app = FastAPI()
 
 usuarios_db = [
-    {"id": 1, "nombre": "Grajilla", "email": "grajilla@aves.com"},
-    {"id": 2, "nombre": "Rabilargo", "email": "rabilargo@aves.com"}
+    {"id": 1, "nombre": "Grajilla", "email": "grajilla@aves.com", "edad": 23},
+    {"id": 2, "nombre": "Rabilargo", "email": "rabilargo@aves.com", "edad": 30}
 ]
 
 class Usuario(BaseModel):
@@ -14,11 +14,6 @@ class Usuario(BaseModel):
     email: str
     edad: int
     
-class UsuarioPatch(BaseModel):
-    nombre: Optional[str] = None
-    email: Optional[str] = None
-    edad: Optional[int] = None
-
 @app.get("/usuarios")
 def obtener_usuarios():
     return usuarios_db
