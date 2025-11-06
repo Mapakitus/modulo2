@@ -17,7 +17,11 @@ class Producto(BaseModel):
 # configuración base de datos
 
 # está en mayúsculas porque es una constante (no cambia)
-DATABASE_URL = "sqlite:///./productos_prueba.db"
+#Así se crea la base de datos en la raíz del proyecto
+#DATABASE_URL = "sqlite:///./productos_prueba.db"
+
+#Así se crea la base de datos en una carpeta llamada SQLalchemy
+DATABASE_URL = "sqlite:///SQLalchemy/productos_prueba.db"
 
 engine = create_engine(
     DATABASE_URL,
@@ -52,4 +56,17 @@ Base.metadata.create_all(bind=engine)
 
 # crear sesión
 db = SessionLocal()
+try:
+    productos_existentes = db.query(ProductoORM).first()
+    if not productos_existentes:
+        productos = [
+            ProductoORM(id=1, nombre="Leche", precio=1.99, stock=100, disponible=True),
+            ProductoORM(id=2, nombre="Queso", precio=15.49, stock=50, disponible=True),
+            ProductoORM(id=3, nombre="Yogur", precio=3.99, stock=200, disponible=False),
+        ]
+        db.add_all(productos)
+        db.commit()
+finally:
+    db.close()
+    
     
