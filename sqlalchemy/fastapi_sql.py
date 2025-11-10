@@ -22,10 +22,12 @@ class Product(Base):
     
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     #Limitamos el tamaño del String a 100 caracteres para el nombre
-    name: Mapped[str] = mapped_column(String(100), nullable=False)
-    #price: Mapped[float] = mapped_column(Float, nullable=False)
-    #in_stock: Mapped[bool] = mapped_column(Boolean, nullable=False)
-
+    nombre: Mapped[str] = mapped_column(String(100), nullable=False)
+   
+#Crear DTOs con Pydantic (schemas.py)
+class ProductDTO(BaseModel):
+    nombre: str | None = None
+    
 #Crear las tablas en la base de datos
 Base.metadata.create_all(engine)
 
@@ -38,7 +40,7 @@ def home():
 
 #API REST:
 #GET all products JSON
-@app.get("/api/productos")
+@app.get("/api/products")
 def find_all():
    session = SessionLocal()
    products = session.query(Product).all()
@@ -46,7 +48,20 @@ def find_all():
    return products
 
 #GET one product
+
+
 #POST create product
+@app.post("/api/products")
+def create(product_dto: ProductDTO):
+    session = SessionLocal()
+    product = Product(nombre=product_dto.nombre)
+    session.add(product)
+    session.commit()
+    session.refresh(product)
+    session.close()
+    return product
+
+
 #PUT update product
 #DELETE delete product
 
