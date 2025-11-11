@@ -3,9 +3,6 @@ from pydantic import BaseModel, ConfigDict
 from sqlalchemy import create_engine, Integer, String, Float, Boolean, select
 from sqlalchemy.orm import sessionmaker, DeclarativeBase, Mapped, mapped_column
 
-app = FastAPI()
-
-
 #Configurar base de datos
 # está en mayúsculas porque es una constante (no cambia)
 
@@ -121,4 +118,22 @@ def init_db():
 #Llamar a la función de inicialización de la base de datos
 init_db()
 
-#API REST
+#dependencia de fastapi para obtener sesión de base de datos
+def get_db():
+    """
+    Dependencia de FastAPI para obtener una sesión de base de datos.
+    Se usa en los endpoints para interactuar con la base de datos.
+    """
+    db = SessionLocal()
+    try:
+        yield db #entrega la sesión al endpoint
+    finally:
+        db.close()
+
+#aplicación FastAPI
+
+app = FastAPI(title="Cancioncitas API", version="1.0.0")
+
+@app.get("/")
+def home():
+    return {"message": "Welcome to the Cancioncitas API!"}
