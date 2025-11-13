@@ -166,3 +166,44 @@ def find_by_id(id: int, db: Session = Depends(get_db)):
             detail=f"No se ha encontrado la canción con id {id}"
         )
     return song
+
+# POST - crear una canción
+@app.post("/api/songs", response_model=SongResponse, status_code=status.HTTP_201_CREATED)
+
+def create(song_dto: SongCreate, db: Session = Depends(get_db)):
+    
+    #validaciones básicas, el strip es para eliminar espacios en blanco delante y detrás
+    if not song_dto.title.strip():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="El título de la canción no puede estar vacío."
+        )       
+        
+    if not song_dto.artist.strip():
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="El artista de la canción no puede estar vacío."
+        )
+        
+    if song_dto.duration_seconds is not None and song_dto.duration_seconds < 0:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="La duración de la canción no puede ser negativa."
+        )
+    
+    #crear objeto Song a partir del DTO
+    song = Song(
+        title=song_dto.title.strip(),
+        artist=song_dto.artist.strip(),
+        duration_seconds=song_dto.duration_seconds,
+        explicit=song_dto.explicit
+    )
+    
+    #agrega el objeto a la sesión
+    db.add(song)
+    #guarda el objeto en la base de datos
+    db.commit()
+    #refresca el objeto para obtener el id generado
+    db.refresh(song)
+    #devuelve el objeto creado
+    return song
