@@ -210,7 +210,7 @@ def create(song_dto: SongCreate, db: Session = Depends(get_db)):
 
 # PUT - actualizar COMPLETAMENTE una canción
 @app.put("/api/songs/{id}", response_model=SongResponse)
-def update(id: int, song_dto: SongUpdate, db: Session = Depends(get_db)):
+def update_all(id: int, song_dto: SongUpdate, db: Session = Depends(get_db)):
     #buscar canción por id
     song = db.execute(
         select(Song).where(Song.id == id)
@@ -252,3 +252,67 @@ def update(id: int, song_dto: SongUpdate, db: Session = Depends(get_db)):
     #refrescar objeto
     db.refresh(song)
     return song
+
+# PATCH - actualizar PARCIALMENTE una canción
+@app.patch("/api/songs/{id}", response_model=SongResponse)
+def update_partial(id: int, song_dto: SongPatch, db: Session = Depends(get_db)):
+    song = db.execute(
+        select(Song).where(Song.id == id)
+    ).scalar_one_or_none()
+    
+    if not song:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail=f"No se ha encontrado la canción con id {id}"
+        )
+    #actualizar solo los campos que no son None
+    if song_dto.title is not None:
+        if not song_dto.title.strip():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="El título de la canción no puede estar vacío."
+            )
+        song.title = song_dto.title.strip()
+    
+    if song_dto.artist is not None:
+        if not song_dto.artist.strip():
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="El artista de la canción no puede estar vacío."
+            )
+        song.artist = song_dto.artist.strip()
+        
+    if song_dto.duration_seconds is not None:
+        if song_dto.duration_seconds < 0:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="La duración de la canción no puede ser negativa."
+            )
+        song.duration_seconds = song_dto.duration_seconds
+        
+    if song_dto.explicit is not None:
+        song.explicit = song_dto.explicit
+        
+    #guardar cambios en la base de datos
+    db.commit()
+    #refrescar objeto
+    db.refresh(song)
+    return song
+
+# DELETE - eliminar una canción
+@app.delete("/api/songs/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete(id: int, db: Session = Depends(get_db)):
+    song = db.execute(
+        select(Song).where(Song.id == id)
+    ).scalar_one_or_none()
+    
+    if not song:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND, 
+            detail=f"No se ha encontrado la canción con id {id}"
+        )
+    
+    #eliminar canción
+    db.delete(song)
+    db.commit()
+    return None
