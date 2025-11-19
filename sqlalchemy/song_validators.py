@@ -85,6 +85,24 @@ class SongUpdate(BaseModel):
     duration_seconds: int | None 
     explicit: bool | None
     
+    @field_validator('title', 'artist')
+    @classmethod
+    def validate_not_empty(cls, v: str) -> str:
+        #verifica que el campo no esté vacío o contenga solo espacios en blanco
+        if not v or not v.strip():
+            raise ValueError('El campo no puede estar vacío o contener solo espacios en blanco.')
+        #retorna el valor sin espacios en blanco delante y detrás (normalizar)
+        return v.strip() 
+    
+    @field_validator('duration_seconds')
+    @classmethod
+    def validate_duration_positive(cls, v: int | None) -> int | None:
+        #valida que la duración no sea None ni negativa
+        if v is not None and v < 0:
+            raise ValueError('La duración de la canción no puede ser negativa.')
+        
+        return v
+    
 #modelo para actualizar canciones parcialmente (PATCH)
 #solo se envían los campos a modificar
 class SongPatch(BaseModel):
@@ -222,28 +240,9 @@ def update_all(id: int, song_dto: SongUpdate, db: Session = Depends(get_db)):
             detail=f"No se ha encontrado la canción con id {id}"
         )
     
-    #validaciones básicas
-    if not song_dto.title.strip():
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="El título de la canción no puede estar vacío."
-        )       
-        
-    if not song_dto.artist.strip():
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="El artista de la canción no puede estar vacío."
-        )
-        
-    if song_dto.duration_seconds is not None and song_dto.duration_seconds < 0:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="La duración de la canción no puede ser negativa."
-        )
-    
     #actualizar campos
-    song.title = song_dto.title.strip()
-    song.artist = song_dto.artist.strip()
+    song.title = song_dto.title
+    song.artist = song_dto.artist
     song.duration_seconds = song_dto.duration_seconds
     song.explicit = song_dto.explicit
     
