@@ -298,23 +298,14 @@ def update_partial(id: int, song_dto: SongPatch, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND, 
             detail=f"No se ha encontrado la canción con id {id}"
         )
-    #actualizar solo los campos que no son None
-    if song_dto.title is not None:
-        song.title = song_dto.title
+  
+    update_data = song_dto.model_dump(exclude_unset=True)
     
-    if song_dto.artist is not None:
-        song.artist = song_dto.artist
-        
-    if song_dto.duration_seconds is not None:
-        song.duration_seconds = song_dto.duration_seconds
-        
-    if song_dto.explicit is not None:
-        song.explicit = song_dto.explicit
-        
-    #guardar cambios en la base de datos
-    db.commit()
-    #refrescar objeto
-    db.refresh(song)
+    for field, value in update_data.items():
+        setattr(song, field, value)
+    
+    db.commit() # confirma los cambios en base datos
+    db.refresh(song) # refresca el objeto
     return song
 
 # DELETE - eliminar una canción
