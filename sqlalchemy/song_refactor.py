@@ -265,12 +265,20 @@ def update_all(id: int, song_dto: SongUpdate, db: Session = Depends(get_db)):
             status_code=status.HTTP_404_NOT_FOUND, 
             detail=f"No se ha encontrado la canción con id {id}"
         )
-    
+    """
     #actualizar campos
     song.title = song_dto.title
     song.artist = song_dto.artist
     song.duration_seconds = song_dto.duration_seconds
     song.explicit = song_dto.explicit
+    """
+    #actualizar campos de forma dinámica
+    # guardar los datos del DTO en un diccionario
+    update_data = song_dto.model_dump()
+    #Bucle para asignar cada campo al objeto song
+    for field, value in update_data.items():
+        #usar setattr para asignar el valor al campo correspondiente
+        setattr(song, field, value)
     
     #guardar cambios en la base de datos
     db.commit()
